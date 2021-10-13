@@ -2,13 +2,13 @@ module.exports = {
   root: true,
   extends: [
     'standard-with-typescript' // Installed in step 2
-    /* 'eslint-config-prettier'  */// Installed in step 3
+    /* 'eslint-config-prettier'  */
   ],
-  parser: '@typescript-eslint/parser', // Installed in step 2
+  parser: '@typescript-eslint/parser',
   plugins: [
-    '@typescript-eslint', // Installed in step 2
-    'react', // Installed in step 1
-    'react-native' // Installed in step 1
+    '@typescript-eslint',
+    'react',
+    'react-native'
   ],
   parserOptions: {
     ecmaFeatures: {
