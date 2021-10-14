@@ -1,5 +1,8 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
+import { SignInScreenProps } from '../../utils/types'
+
+interface Props extends SignInScreenProps{}
 
 const SignInScreen = () => {
   return (

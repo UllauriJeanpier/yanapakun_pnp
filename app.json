@@ -23,6 +23,7 @@
     }
     },
     "android": {
+      "package": "com.likeseasons.yanapakunpnp",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"

@@ -1,13 +1,16 @@
-import { DrawerNavigationProp, DrawerScreenProps } from '@react-navigation/drawer'
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import MapView, { Marker } from 'react-native-maps'
 import Header from '../../components/Header'
+import PoliceIcon from '../../assets/svg/ubicación-policía.svg'
+import PersonaIcon from '../../assets/svg/ubicación-persona.svg'
+import GreenPosition from '../../assets/svg/placeholder.svg'
 import { IPosition } from '../../interfaces/LocationInterface'
 import { getCurrentLocation } from '../../utils/helpers'
 import { HomeScreenProps, RootDrawerParams } from '../../utils/types'
+import { FONTS } from '../../utils/constants'
 
-interface Props extends HomeScreenProps{}
+interface Props extends HomeScreenProps { }
 
 const HomeScreen = ({ navigation }: Props) => {
   const [location, setlocation] = useState<IPosition>()
@@ -19,7 +22,6 @@ const HomeScreen = ({ navigation }: Props) => {
   const getLocation = async () => {
     const { status, position } = await getCurrentLocation()
     if (!status) {
-      // Mostrar nuevamente el modal
       return
     }
     position && setlocation(position)
@@ -30,17 +32,49 @@ const HomeScreen = ({ navigation }: Props) => {
     <>
       <Header title='Yanapakun Policía H.' navigation={ navigation } hasDrawer />
       <View style={ styles.container }>
-        { location && (<MapView
-          style={ styles.mapContainer }
-          initialRegion={ location }
+        { location && (
+          <MapView
+            style={ styles.mapContainer }
+            mapType="standard"
+            // Aqui se puede intercambiar por la region de Huancavelica de manera estatica
+            initialRegion={ location }
           >
-          <Marker coordinate={ location }>
-
-          </Marker>
-        </MapView>) }
+            <CustomMarker
+              location={ location }
+              title={ 'Tú' }
+              isPolice
+            />
+          </MapView>) }
       </View>
     </>
+  )
+}
 
+interface PropsMarker {
+  location: IPosition
+  title: string
+  isPolice?: boolean
+}
+
+const CustomMarker = ({ location, title, isPolice }: PropsMarker) => {
+  return (
+    <Marker coordinate={ location }>
+      <View style={ styles.positionContainer }>
+        <View style={ styles.imageIconContainer }>
+          <Text style={ styles.txtIcon }>{ title }</Text>
+          { isPolice
+            ? (
+              <PoliceIcon width={ '100%' } height={ '100%' } />
+              )
+            : (
+              <PersonaIcon width={ '100%' } height={ '100%' } />
+              ) }
+        </View>
+        <View style={ styles.markerIconContainer }>
+          <GreenPosition width={ '50%' } height={ '100%' } />
+        </View>
+      </View>
+    </Marker>
   )
 }
 
@@ -56,5 +90,29 @@ const styles = StyleSheet.create({
   mapContainer: {
     width: '100%',
     height: '100%'
+  },
+  positionContainer: {
+    width: 110,
+    height: 90
+    // backgroundColor: 'red'
+  },
+  imageIconContainer: {
+    flex: 5,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  txtIcon: {
+    position: 'absolute',
+    top: 17,
+    right: 32,
+    zIndex: 10,
+    fontFamily: FONTS.ProximaNovaBold,
+    fontSize: 16,
+    color: '#FFFCF7'
+  },
+  markerIconContainer: {
+    flex: 2,
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 })
