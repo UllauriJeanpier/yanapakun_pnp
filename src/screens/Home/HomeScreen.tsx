@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, SafeAreaView } from 'react-native'
 import MapView, { Marker } from 'react-native-maps'
 import Header from '../../components/Header'
 import PoliceIcon from '../../assets/svg/ubicación-policía.svg'
@@ -29,7 +29,7 @@ const HomeScreen = ({ navigation }: Props) => {
   }
 
   return (
-    <>
+    <SafeAreaView>
       <Header title='Yanapakun Policía H.' navigation={ navigation } hasDrawer />
       <View style={ styles.container }>
         { location && (
@@ -46,7 +46,7 @@ const HomeScreen = ({ navigation }: Props) => {
             />
           </MapView>) }
       </View>
-    </>
+    </SafeAreaView>
   )
 }
 
