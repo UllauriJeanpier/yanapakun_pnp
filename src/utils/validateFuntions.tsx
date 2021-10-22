@@ -25,8 +25,26 @@ export const handleDNI = (text: string) => {
     return true
   }
 }
+// Por validar el CPI, data en espera
+export const handleCPI = (text: string) => {
+  const regexCPI = /^\d{8}(?:[-\s]\d{4})?$/
+  if (!regexCPI.test(text)) {
+    return false
+  } else {
+    return true
+  }
+}
 
 export const handleDistrit = (text: string) => {
+  if (text.length < 3) {
+    return false
+  } else {
+    return true
+  }
+}
+
+// Por validar la unidad policial
+export const handleUnitPolice = (text: string) => {
   if (text.length < 3) {
     return false
   } else {

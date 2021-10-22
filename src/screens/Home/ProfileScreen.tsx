@@ -57,7 +57,7 @@ const ProfileScreen = ({ navigation }: Props) => {
               </View>
               <View style={ styles.lastDataUser }>
                 <Text style={ styles.fontText }>Unidad policia:</Text>
-                <Text style={ styles.fontText }>------</Text>
+                <Text style={ styles.fontText }>CPNP HUACHOCOLPA</Text>
               </View>
             </View>
           </View>

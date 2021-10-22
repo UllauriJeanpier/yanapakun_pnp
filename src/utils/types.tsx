@@ -4,6 +4,7 @@ import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-naviga
 // Main Stack Screens params
 
 export type RootStackParams = {
+  IndexScreen: undefined
   SignUpScreen: undefined
   SignInScreen: undefined
   DrawerNavigator: undefined
@@ -21,6 +22,7 @@ export type RootDrawerParams = {
 
 export type SignInScreenProps = NativeStackScreenProps<RootStackParams, 'SignInScreen'>
 export type SignUpScreenProps = NativeStackScreenProps<RootStackParams, 'SignUpScreen'>
+export type IndexScreen = NativeStackScreenProps<RootStackParams, 'IndexScreen'>
 
 // SreenProps Drawer Screens
 

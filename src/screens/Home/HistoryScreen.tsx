@@ -53,6 +53,12 @@ const HistoryScreen = ({navigation}: Props) => {
   ]
 
   const [atention, setAtention] = useState(false)
+  const [user, onChangeUser]= useState({
+    userName: 'Prueba Prueba',
+    id: 0,
+    time: '00:00',
+    atention: false,
+  })
   
   return (
     <SafeAreaView style={ styles.container }>
@@ -61,9 +67,9 @@ const HistoryScreen = ({navigation}: Props) => {
           <Header title="Historial de Emergencias" navigation={ navigation } hasDrawer />
           <View style={styles.containNotifications}>
             {
-              userNotifications.map((usuario) => {
+              userNotifications.map((usuario, index: number) => {
                 return (
-                  <View style={ styles.notification }>
+                  <View style={ styles.notification } key={ index }>
                     <View>
                       <Text style={ styles.emergencyUser }>{ usuario.userName }</Text>
                       <Text style={ styles.emergencyTime }>Hoy { usuario.time }</Text>
@@ -73,7 +79,10 @@ const HistoryScreen = ({navigation}: Props) => {
                       ? 
                     <TouchableOpacity
                       style={ styles.btn }
-                      onPress={() => setAtention(true)}
+                      onPress={() => {
+                        onChangeUser(usuario)
+                        setAtention(true)
+                      }}
                     >
                       <Reject/>
                       <Text style={styles.btnRed}>Sin respuesta</Text>
@@ -81,22 +90,25 @@ const HistoryScreen = ({navigation}: Props) => {
                       :
                     <TouchableOpacity
                       style={ styles.btn }
-                      onPress={() => setAtention(true)}
+                      onPress={() => {
+                        onChangeUser(usuario)
+                        setAtention(true)
+                      }}
                     >
                       <Ready/>
                       <Text style={ styles.btnGreen }>Atendida</Text>
                     </TouchableOpacity>
                     }
-                    <ModalNotification
-                      isVisible={ atention }
-                      hideAction={ () => setAtention(false)}
-                      user={ usuario }
-                    />
                   </View>
                 )
               })
             }
           </View>
+          <ModalNotification
+            isVisible={ atention }
+            hideAction={ () => setAtention(false)}
+            user={ user }
+          />
         </View>
       </ScrollView>
     </SafeAreaView>

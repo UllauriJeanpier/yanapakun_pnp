@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Close from '../assets/svg/Closegreen.svg'
 import Ready from '../assets/svg/checkCircle.svg'
 import Reject from '../assets/svg/notDisturbon.svg'
+import { TextInput } from 'react-native-gesture-handler';
 
 interface Props {
     isVisible: boolean,
@@ -18,6 +19,10 @@ interface User {
 }
 
 const ModalNotification = ({ isVisible=false, hideAction, user}: Props) => {
+
+    const [ textDescription , setTextDescription] = useState('');
+    console.log(textDescription);
+
     return (
         <Modal transparent={ true } visible={ isVisible }>
             <View style={ styles.containerFondo }>
@@ -28,26 +33,35 @@ const ModalNotification = ({ isVisible=false, hideAction, user}: Props) => {
                         <Close width={ 20 } height={ 20 } />
                     </TouchableOpacity>
                     <View style={ styles.dataShow }>
-                        <Text>{user.userName}</Text>
-                        <Text>Hoy {user.time}</Text>
+                        <Text style={ styles.userName }>{user.userName}</Text>
+                        <Text style={ styles.time }>Hoy {user.time}</Text>
                         {
                             user.atention === true
                             ?
-                            <View>
+                            <View style={ styles.atentionContainer }>
                                 <Ready width={ 40 } height={ 40 } />
-                                <Text>Atendida</Text>
+                                <Text style={ styles.textGreen }>Atendida</Text>
                             </View>
                             :
-                            <View>
+                            <View style={ styles.atentionContainer }>
                                 <Reject width={ 40 } height={ 40 }/>
-                                <Text>Sin respuesta</Text>
+                                <Text style={ styles.textRed }>Sin respuesta</Text>
                             </View>
                         }
                     </View>
                     <View>
-                        <Text>Descripcion de la emergencia:</Text>
-                        <TouchableOpacity>
-                            <Text>Añadir</Text>
+                        <Text style={ styles.txtDescription }>Descripción de la emergencia:</Text>
+                        <TextInput
+                            editable
+                            maxLength={400}
+                            multiline
+                            numberOfLines={4}
+                            onChangeText={text => setTextDescription(text)}
+                            value={ textDescription }
+                            style={ styles.inputDescription }
+                        />
+                        <TouchableOpacity style={ styles.btnAdd }>
+                            <Text style={ styles.txtAdd }>Añadir</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -66,11 +80,10 @@ const styles = StyleSheet.create({
       backgroundColor: '#000000aa'
     },
     containerModal: {
-      padding: 15,
-      height: '40%',
+      padding: 20,
+    //   height: '50%',
       width: '85%',
-      justifyContent: 'space-evenly',
-      backgroundColor: 'white',
+      backgroundColor: '#FFFCF7',
       borderRadius: 20
     },
     iconClose: {
@@ -79,9 +92,72 @@ const styles = StyleSheet.create({
       top: 0,
       right: 0
     },
+    userName:{
+        color: '#3A413D',
+        fontWeight: 'bold',
+        fontSize: 15,
+        lineHeight: 17,
+        marginTop: 6
+    },
+    time:{
+        color: '#3A413D',
+        fontSize: 14,
+        fontWeight: '500',
+        marginTop: 3,
+        marginBottom: 20
+    },
     dataShow: {
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center'        
+    },
+    atentionContainer: {
+        width: 100,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    textGreen: {
+        color: '#216D3F',
+        marginTop: 7,
+        fontSize: 12,
+        fontWeight: '500',
+        lineHeight: 14,
+        marginBottom: 40
+    },
+    textRed: {
+        color: '#A41C1C',
+        marginTop: 7,
+        fontSize: 12,
+        fontWeight: '500',
+        lineHeight: 14,
+        marginBottom: 40
+    },
+    txtDescription: {
+        color: '#3A413D',
+        fontSize: 14,
+        fontWeight: 'bold',
+        lineHeight: 18,
+        marginBottom: 6
+    },
+    inputDescription:{
+        height: 134,
+        backgroundColor: 'white',
+        borderRadius: 12,
+        borderColor: '#e3e3e3',
+        borderWidth: 1,
+        marginBottom: 15,
+        padding: 8
+    },
+    btnAdd: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#216D3F',
+        borderRadius: 24
+    },
+    txtAdd: {
+        color: '#FFFCF7',
+        fontWeight: 'bold',
+        fontSize: 16,
+        paddingVertical: 15,
     }
   })

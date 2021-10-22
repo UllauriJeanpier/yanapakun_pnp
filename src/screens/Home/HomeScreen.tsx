@@ -29,7 +29,7 @@ const HomeScreen = ({ navigation }: Props) => {
   }
 
   return (
-    <SafeAreaView>
+    <>
       <Header title='Yanapakun Policía H.' navigation={ navigation } hasDrawer />
       <View style={ styles.container }>
         { location && (
@@ -46,7 +46,7 @@ const HomeScreen = ({ navigation }: Props) => {
             />
           </MapView>) }
       </View>
-    </SafeAreaView>
+    </>
   )
 }
 
