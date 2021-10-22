@@ -1,17 +1,209 @@
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import React, { useState }  from 'react'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import Checkbox from 'expo-checkbox'
 import { SignUpScreenProps } from '../../utils/types'
+import Header from '../../components/Header'
+import {
+  handleName,
+  handleAge,
+  handleCPI,
+  handleDNI,
+  handleDistrit,
+  handleUnitPolice,
+  handleEmail,
+  handlePassword
+} from '../../utils/validateFuntions'
+import InputForm from '../../components/InputForm'
+import { COLORS } from '../../utils/constants'
+import Button from '../../components/Button'
 
 interface Props extends SignUpScreenProps{}
 
-const SignUpScreen = () => {
+const SignUpScreen = ({ navigation }: Props) => {
+  const [names, setNames] = useState('')
+  const [validateName, setValidateName] = useState(false)
+  const [surnames, setSurnames] = useState('')
+  const [validateSurname, setValidateSurname] = useState(false)
+  const [age, setAge] = useState('')
+  const [CPI, setCPI] = useState('')
+  const [validateCPI, setValidateCPI] = useState(false)
+  const [validateAge, setValidateAge] = useState(false)
+  const [DNI, setDNI] = useState('')
+  const [validateDNI, setValidateDNI] = useState(false)
+  const [distrit, setDistrit] = useState('')
+  const [validateDistrit, setValidateDistrit] = useState(false)
+  const [unitPolice, setUnitPolice] = useState('')
+  const [validateUnitPolice, setValidateUnitPolice] = useState(false)
+  const [email, setEmail] = useState('')
+  const [validateEmail, setValidateEmail] = useState(false)
+  const [password, setPassword] = useState('')
+  const [validatePassword, setValidatePassword] = useState(false)
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [validateConfirmPassword, setValidateConfirmPassword] = useState(false)
+  const [isChecked, setIsChecked] = useState(false)
+
+  const goToSignIn = () => navigation.navigate('SignInScreen')
+
+  const registro = () => {
+    console.log('Este es un registro')
+  }
   return (
-    <View>
-      <Text> SignUpScreen test</Text>
-    </View>
+    <ScrollView>
+      <Header title="Regístrate" navigation={navigation}/>
+      <View style={ styles.container }>
+        <InputForm
+          label={ 'Nombres:' }
+          placeholder={ 'Nombres' }
+          valueInput={ names }
+          setValueInput={ setNames }
+          validateInput={ validateName }
+          setValidateInput={ setValidateName }
+          functionValidation={ handleName }
+          errorMessage={ 'Escribe un nombre válido' }
+        />
+        <InputForm
+          label={ 'Apellidos:' }
+          placeholder={ 'Apellidos' }
+          valueInput={ surnames }
+          setValueInput={ setSurnames }
+          validateInput={ validateSurname }
+          setValidateInput={ setValidateSurname }
+          functionValidation={ handleName }
+          errorMessage={ 'Escribe un apellido válido' }
+        />
+        <InputForm
+          label={ 'Edad:' }
+          placeholder={ 'Edad' }
+          valueInput={ age }
+          setValueInput={ setAge }
+          validateInput={ validateAge }
+          keyboardType= 'numeric'
+          setValidateInput={ setValidateAge }
+          functionValidation={ handleAge }
+          errorMessage={ 'Escribe una edad válida' }
+        />
+        <InputForm
+          label={ 'Número de DNI:' }
+          placeholder={ 'DNI' }
+          valueInput={ DNI }
+          setValueInput={ setDNI }
+          validateInput={ validateDNI }
+          setValidateInput={ setValidateDNI }
+          functionValidation={ handleDNI }
+          errorMessage={ 'Escribe un DNI válido' }
+        />
+
+        <InputForm
+          label={ 'Número de CPI:' }
+          placeholder={ 'CPI' }
+          valueInput={ CPI }
+          setValueInput={ setCPI }
+          validateInput={ validateCPI }
+          setValidateInput={ setValidateCPI }
+          functionValidation={ handleCPI }
+          errorMessage={ 'Escribe un CPI válido' }
+        />
+
+        <InputForm
+          label={ 'Distrito:' }
+          placeholder={ 'Distrito' }
+          valueInput={ distrit }
+          setValueInput={ setDistrit }
+          validateInput={ validateDistrit }
+          setValidateInput={ setValidateDistrit }
+          functionValidation={ handleDistrit }
+          errorMessage={ 'Escribe un distrito válido' }
+        />
+
+        <InputForm
+          label={ 'Unidad policial:' }
+          placeholder={ 'Unidad policial' }
+          valueInput={ unitPolice }
+          setValueInput={ setUnitPolice}
+          validateInput={ validateUnitPolice }
+          setValidateInput={ setValidateUnitPolice }
+          functionValidation={ handleUnitPolice }
+          errorMessage={ 'Escribe una unidad policial válida' }
+        />
+
+        <InputForm
+          label={ 'Correo electrónico:' }
+          placeholder={ 'Correo' }
+          valueInput={ email }
+          setValueInput={ setEmail }
+          validateInput={ validateEmail }
+          setValidateInput={ setValidateEmail }
+          functionValidation={ handleEmail }
+          errorMessage={ 'Escribe un correo válido' }
+        />
+
+        <InputForm
+          label={ 'Contraseña:' }
+          placeholder={ 'Contraseña' }
+          valueInput={ password }
+          setValueInput={ setPassword }
+          validateInput={ validatePassword }
+          setValidateInput={ setValidatePassword }
+          functionValidation={ handlePassword }
+          errorMessage={ 'Escribe una contraseña válida' }
+          isPassword
+        />
+        <InputForm
+          label={ 'Confirmar contraseña:' }
+          placeholder={ 'Confirmar contraseña' }
+          valueInput={ confirmPassword }
+          setValueInput={ setConfirmPassword }
+          validateInput={ validateConfirmPassword }
+          setValidateInput={ setValidateConfirmPassword }
+          functionValidation={ handlePassword }
+          errorMessage={ 'Escribe una contraseña válida' }
+          isPassword
+        />
+        <View style={ styles.checkSection }>
+          <Checkbox
+            style={ styles.checkbox }
+            value={ isChecked }
+            onValueChange={ setIsChecked }
+            color={ COLORS.PRIMARY }
+          />
+          <Text style={ styles.paragraph }>Acepto términos, condiciones y politicas</Text>
+        </View>
+        <Button title='Regístrate' action={ registro } />
+        <Text style={ styles.txtInf }>¿Ya estás registrado?{ ' ' }
+          <Text style={ styles.boldTxtInfo } onPress={ goToSignIn } >
+            Iniciar Sesión
+          </Text>
+        </Text>
+      </View>
+    </ScrollView>
   )
 }
 
 export default SignUpScreen
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: 25,
+    paddingVertical: 15
+  },
+  checkSection: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 10
+  },
+  paragraph: {
+    fontSize: 13,
+    color: COLORS.PRIMARY,
+    textAlign: 'justify'
+  },
+  checkbox: {},
+  txtInf: {
+    marginVertical: 15,
+    color: COLORS.PRIMARY,
+    fontSize: 15,
+    textAlign: 'center'
+  },
+  boldTxtInfo: {
+    fontWeight: 'bold'
+  }
+})
