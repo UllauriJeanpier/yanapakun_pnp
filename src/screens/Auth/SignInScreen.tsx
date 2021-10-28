@@ -11,7 +11,6 @@ import { handleCPI, handlePassword } from '../../utils/validateFuntions'
 interface Props extends NativeStackScreenProps<RootStackParams, 'SignInScreen'>{}
 
 const SignInScreen = ({ navigation }: Props) => {
-
   const [CPI, setCPI] = useState('')
   const [validateCPI, setValidateCPI] = useState(false)
   const [password, setPassword] = useState('')
@@ -20,8 +19,7 @@ const SignInScreen = ({ navigation }: Props) => {
   const goToSignUp = () => navigation.navigate('SignUpScreen')
 
   const login = () => {
-    console.log({ CPI, password });
-    
+    console.log({ CPI, password })
   }
 
   return (
@@ -53,7 +51,7 @@ const SignInScreen = ({ navigation }: Props) => {
         </View>
         <View style={ styles.sesionContainer }>
           <Text style={ styles.txtInf }>Olvidaste tu contraseña</Text>
-          <Button title={ 'Iniciar sesión' }  action={ login }/>
+          <Button title={ 'Iniciar sesión' } action={ login }/>
           <Text style={ styles.txtInf }>¿No estás registrado?{ ' ' }
             <Text style={ styles.boldTxtInfo } onPress={ goToSignUp } >
               Regístrate
@@ -73,7 +71,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 25,
     paddingTop: 75,
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-evenly'
   },
   inputsContainer: {
     height: '50%',
