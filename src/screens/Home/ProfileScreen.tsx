@@ -1,6 +1,6 @@
 import { DrawerScreenProps } from '@react-navigation/drawer'
-import React from 'react'
-import { ScrollView, StyleSheet, Text, View, TouchableOpacity} from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { ScrollView, StyleSheet, Text, View, TouchableOpacity, Platform, Image } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Header from '../../components/Header'
 import { ProfileScreenProps, RootDrawerParams } from '../../utils/types'
@@ -9,26 +9,68 @@ import UserPhoto from '../../assets/svg/User-yanapakun.svg'
 import Camera from '../../assets/svg/Camara.svg'
 import { SCREEN } from '../../utils/constants'
 
+import * as ImagePicker from 'expo-image-picker'
+
 interface Props extends ProfileScreenProps{}
 
 const ProfileScreen = ({ navigation }: Props) => {
+
+  const [img, setImg] = useState('')
+
+  const pickImg = async () => {
+    if (Platform.OS === 'ios') {
+      const cameraRollStatus = await ImagePicker.requestMediaLibraryPermissionsAsync()
+      const cameraStatus = await ImagePicker.requestCameraPermissionsAsync()
+      if (
+        cameraRollStatus.status !== 'granted' ||
+        cameraStatus.status !== 'granted'
+      ) {
+        alert('Lo sentimos, necesitamos estos permisos para que esto funcione.')
+      }
+    }
+  }
+
+  const pickerPicture = async () => {
+    const pickerResult = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 2],
+      quality: 0.8,
+    })
+    console.log(pickerResult);
+    if(!pickerResult.cancelled) {
+      setImg(pickerResult.uri)
+    }
+  }
+
+  useEffect(() => {
+    pickImg()
+  }, [])
   return (
     <SafeAreaView style={ styles.container }>
       <ScrollView>
         <View>
           <Header title='Yanapakun Policía H.' navigation={ navigation } />
           <View>
-            <View style={ styles.UserPhoto }>
-              { /* <Image
-                source={ img }
-              /> */ }
-              <UserPhoto />
-              <TouchableOpacity
-                style={ styles.saveUserPhoto }
-                onPress={ () => alert('click') }
-              >
-                <Camera />
-              </TouchableOpacity>
+            <View style={ styles.containPhotoUser }>
+              <View style={ styles.UserPhoto }>
+                {
+                    (img)
+                      ? (
+                        <Image
+                          source={ { uri: img } }
+                          style={ styles.usePickerPhoto }
+                        />
+                        )
+                      : ( <UserPhoto/> ) 
+                }
+                <TouchableOpacity
+                  style={ styles.saveUserPhoto }
+                  onPress={ pickerPicture }
+                >
+                  <Camera />
+                </TouchableOpacity>
+              </View>
             </View>
             <View style={ styles.data }>
               <View style={ styles.dataUser }>
@@ -74,17 +116,32 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFFCF7'
   },
+  containPhotoUser: {
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   UserPhoto: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginVertical: 44
+    marginVertical: 44,
+    height: 200,
+    width: 180,
+    borderRadius: 20,
+    backgroundColor: 'transparent',
+    borderColor: '#e3e3e3',
+    borderWidth: 1
   },
   saveUserPhoto: {
     position: 'absolute',
     alignSelf: 'flex-end',
-    left: (SCREEN.width * 2) / 3,
-    top: 160
+    right: -10,
+    bottom: -10
+  },
+  usePickerPhoto: {
+    width: 180,
+    height: 200,
+    borderRadius: 20
   },
   data: {
     paddingHorizontal: 28
