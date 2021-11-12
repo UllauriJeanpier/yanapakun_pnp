@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { View, Text, StyleSheet, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
 import Button from '../../components/Button'
 import Header from '../../components/Header'
 import InputForm from '../../components/InputForm'
@@ -20,8 +20,11 @@ const SignInScreen = ({ navigation }: Props) => {
   const goToSignUp = () => navigation.navigate('SignUpScreen')
 
   const login = () => {
-    console.log({ CPI, password });
-    
+    if( CPI.length === 0 || password.length === 0 ) {
+      Alert.alert('Ingrese correctamente el CPI o contraseña')
+      return;
+    }
+    console.log({CPI, password});
   }
 
   return (

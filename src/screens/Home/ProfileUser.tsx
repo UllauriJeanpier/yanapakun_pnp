@@ -1,51 +1,16 @@
 import { DrawerScreenProps } from '@react-navigation/drawer'
-import React, { useEffect, useState } from 'react'
-import { ScrollView, StyleSheet, Text, View, TouchableOpacity, Platform, Image } from 'react-native'
+import React from 'react'
+import { ScrollView, StyleSheet, Text, View, Image } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Header from '../../components/Header'
 import { ProfileScreenProps, RootDrawerParams } from '../../utils/types'
 
 import UserPhoto from '../../assets/svg/User-yanapakun.svg'
-import Camera from '../../assets/svg/Camara.svg'
-import { SCREEN } from '../../utils/constants'
-
-import * as ImagePicker from 'expo-image-picker'
 
 interface Props extends ProfileScreenProps{}
 
-const ProfileScreen = ({ navigation }: Props) => {
+const ProfileUser = ({ navigation }: Props) => {
 
-  const [img, setImg] = useState('')
-
-  const pickImg = async () => {
-    if (Platform.OS === 'ios') {
-      const cameraRollStatus = await ImagePicker.requestMediaLibraryPermissionsAsync()
-      const cameraStatus = await ImagePicker.requestCameraPermissionsAsync()
-      if (
-        cameraRollStatus.status !== 'granted' ||
-        cameraStatus.status !== 'granted'
-      ) {
-        alert('Lo sentimos, necesitamos estos permisos para que esto funcione.')
-      }
-    }
-  }
-
-  const pickerPicture = async () => {
-    const pickerResult = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [1, 2],
-      quality: 0.8,
-    })
-    console.log(pickerResult);
-    if(!pickerResult.cancelled) {
-      setImg(pickerResult.uri)
-    }
-  }
-
-  useEffect(() => {
-    pickImg()
-  }, [])
   return (
     <SafeAreaView style={ styles.container }>
       <ScrollView>
@@ -54,22 +19,16 @@ const ProfileScreen = ({ navigation }: Props) => {
           <View>
             <View style={ styles.containPhotoUser }>
               <View style={ styles.UserPhoto }>
-                {
+                {/* {
                     (img)
                       ? (
                         <Image
-                          source={ { uri: img } }
+                          source={ { uri: imagen perfil } }
                           style={ styles.usePickerPhoto }
                         />
                         )
                       : ( <UserPhoto/> ) 
-                }
-                <TouchableOpacity
-                  style={ styles.saveUserPhoto }
-                  onPress={ pickerPicture }
-                >
-                  <Camera />
-                </TouchableOpacity>
+                } */}
               </View>
             </View>
             <View style={ styles.data }>
@@ -90,16 +49,12 @@ const ProfileScreen = ({ navigation }: Props) => {
                 <Text style={ styles.fontText }>San pedro</Text>
               </View>
               <View style={ styles.dataUser }>
-                <Text style={ styles.fontText }>E-mail:</Text>
-                <Text style={ styles.fontText }>juanluis@gmail.com</Text>
+                <Text style={ styles.fontText }>Nro de Teléfono:</Text>
+                <Text style={ styles.fontText }>946845604</Text>
               </View>
               <View style={ styles.dataUser }>
-                <Text style={ styles.fontText }>CPI:</Text>
-                <Text style={ styles.fontText }>06789546</Text>
-              </View>
-              <View style={ styles.lastDataUser }>
-                <Text style={ styles.fontText }>Unidad policia:</Text>
-                <Text style={ styles.fontText }>CPNP HUACHOCOLPA</Text>
+                <Text style={ styles.fontText }>Teléfono de emergencia::</Text>
+                <Text style={ styles.fontText }>946845604</Text>
               </View>
             </View>
           </View>
@@ -109,7 +64,7 @@ const ProfileScreen = ({ navigation }: Props) => {
   )
 }
 
-export default ProfileScreen
+export default ProfileUser
 
 const styles = StyleSheet.create({
   container: {

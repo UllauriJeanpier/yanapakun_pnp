@@ -13,6 +13,7 @@ import { HistoryScreenProps } from '../../utils/types'
 import Ready from '../../assets/svg/checkCircle.svg'
 import Reject from '../../assets/svg/notDisturbon.svg'
 import ModalNotification from '../../components/ModalNotification'
+import { ModalEmergency } from '../../components/ModalEmergency'
 
 interface Props extends HistoryScreenProps{}
 
@@ -53,6 +54,7 @@ const HistoryScreen = ({navigation}: Props) => {
   ]
 
   const [atention, setAtention] = useState(false)
+  const [modal, setModal] = useState(true)
   const [user, onChangeUser]= useState({
     userName: 'Prueba Prueba',
     id: 0,
@@ -108,6 +110,10 @@ const HistoryScreen = ({navigation}: Props) => {
             isVisible={ atention }
             hideAction={ () => setAtention(false)}
             user={ user }
+          />
+          <ModalEmergency
+            isVisible={ modal }
+            hideAction={ () => setModal(false)}
           />
         </View>
       </ScrollView>
