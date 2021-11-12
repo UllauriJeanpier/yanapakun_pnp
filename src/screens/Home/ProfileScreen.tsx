@@ -1,22 +1,90 @@
-import { DrawerScreenProps } from '@react-navigation/drawer'
 import React, { useEffect, useState } from 'react'
 import { ScrollView, StyleSheet, Text, View, TouchableOpacity, Platform, Image } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Header from '../../components/Header'
-import { ProfileScreenProps, RootDrawerParams } from '../../utils/types'
+import { ProfileScreenProps } from '../../utils/types'
 
+import * as ImagePicker from 'expo-image-picker'
 import UserPhoto from '../../assets/svg/User-yanapakun.svg'
 import Camera from '../../assets/svg/Camara.svg'
 import { SCREEN } from '../../utils/constants'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { IUserLogin } from '../../interfaces/authInterfaces'
+import { getProfile, getProfilePhoto, uploadImage } from '../../services/yanapakun/profile'
 
-import * as ImagePicker from 'expo-image-picker'
+interface UserData {
+  email: string
+}
+
+interface ProfileData {
+  age: number
+  dateBirth: string
+  district: string
+  document: string
+  emergencyNumber: string
+  firstName: string
+  gender: string
+  id: number
+  lastName: string
+  latitude: string
+  longitude: string
+  phone: string
+  updatedAt: string
+  user: UserData
+}
 
 interface Props extends ProfileScreenProps{}
 
 const ProfileScreen = ({ navigation }: Props) => {
+  const [loading, setLoading] = useState(true)
+  const [profile, setProfile] = useState<ProfileData>({
+    age: 0,
+    dateBirth: '',
+    district: '',
+    document: '',
+    emergencyNumber: '',
+    firstName: '',
+    gender: '',
+    id: 0,
+    lastName: '',
+    latitude: '',
+    longitude: '',
+    phone: '',
+    updatedAt: '',
+    user: {
+      email: ''
+    }
+  })
+  const fetchData = async () => {
+    try {
+      setLoading(true)
+      const response = await getProfile()
+      setProfile(response.data)
+      await fetchPhotoUser()
+    } catch (e) {
+      console.log(e)
+    }
+  }
+  const [image, setImage] = useState<string>('')
 
-  const [img, setImg] = useState('')
-
+  const fetchPhotoUser = async () => {
+    try {
+      setLoading(true)
+      const user = await AsyncStorage.getItem('user')
+      let dataUser: IUserLogin
+      if (typeof user === 'string') {
+        dataUser = JSON.parse(user)
+        const response = await getProfilePhoto(dataUser?.id)
+        if (response) {
+          setImage(String(response))
+        } else {
+          setImage('')
+        }
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
   const pickImg = async () => {
     if (Platform.OS === 'ios') {
       const cameraRollStatus = await ImagePicker.requestMediaLibraryPermissionsAsync()
@@ -30,22 +98,43 @@ const ProfileScreen = ({ navigation }: Props) => {
     }
   }
 
-  const pickerPicture = async () => {
-    const pickerResult = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [1, 2],
-      quality: 0.8,
+  useEffect(() => {
+    fetchData().then(() => {
+      setLoading(false)
     })
-    console.log(pickerResult);
-    if(!pickerResult.cancelled) {
-      setImg(pickerResult.uri)
+    pickImg()
+  }, [])
+
+  const pickerPicture = async () => {
+    try {
+      const pickerResult = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: true,
+        aspect: [2, 2]
+      })
+      await handleImagePicked(pickerResult)
+    } catch (e) {
+      console.log(e)
     }
   }
 
-  useEffect(() => {
-    pickImg()
-  }, [])
+  const handleImagePicked = async (pickerResult: ImagePicker.ImagePickerResult) => {
+    try {
+      if (!pickerResult.cancelled) {
+        const user = await AsyncStorage.getItem('user')
+        let dataUser: IUserLogin
+        if (typeof user === 'string') {
+          dataUser = JSON.parse(user)
+          await uploadImage(pickerResult.uri, dataUser.id)
+          await fetchData()
+          setLoading(false)
+        }
+      }
+    } catch (e) {
+      console.log({ e })
+      alert('Upload failed, sorry :(')
+    }
+  }
+
   return (
     <SafeAreaView style={ styles.container }>
       <ScrollView>
@@ -55,51 +144,52 @@ const ProfileScreen = ({ navigation }: Props) => {
             <View style={ styles.containPhotoUser }>
               <View style={ styles.UserPhoto }>
                 {
-                    (img)
-                      ? (
-                        <Image
-                          source={ { uri: img } }
-                          style={ styles.usePickerPhoto }
-                        />
-                        )
-                      : ( <UserPhoto/> ) 
-                }
+                  (image)
+                    ? (
+                      <Image
+                        source={ { uri: image } }
+                        style={ styles.usePickerPhoto }
+                      />
+                      )
+                    : (
+                      <UserPhoto/>
+                      ) }
                 <TouchableOpacity
                   style={ styles.saveUserPhoto }
                   onPress={ pickerPicture }
                 >
-                  <Camera />
+                  <Camera/>
                 </TouchableOpacity>
               </View>
             </View>
             <View style={ styles.data }>
               <View style={ styles.dataUser }>
                 <Text style={ styles.fontText }>Nombre:</Text>
-                <Text style={ styles.fontText }>Jose Luis Amaranto</Text>
+                <Text style={ styles.fontText }>{ profile.firstName } { profile.lastName }</Text>
               </View>
               <View style={ styles.dataUser }>
                 <Text style={ styles.fontText }>Edad:</Text>
-                <Text style={ styles.fontText }>51 años</Text>
+                <Text style={ styles.fontText }>{ profile.age } años</Text>
               </View>
               <View style={ styles.dataUser }>
                 <Text style={ styles.fontText }>DNI:</Text>
-                <Text style={ styles.fontText }>70659234</Text>
+                <Text style={ styles.fontText }>{ profile.document }</Text>
               </View>
               <View style={ styles.dataUser }>
                 <Text style={ styles.fontText }>Distrito:</Text>
-                <Text style={ styles.fontText }>San pedro</Text>
+                <Text style={ styles.fontText }>{ profile.district }</Text>
               </View>
               <View style={ styles.dataUser }>
                 <Text style={ styles.fontText }>E-mail:</Text>
-                <Text style={ styles.fontText }>juanluis@gmail.com</Text>
+                <Text style={ styles.fontText }>{ profile.user.email }</Text>
               </View>
               <View style={ styles.dataUser }>
-                <Text style={ styles.fontText }>CPI:</Text>
-                <Text style={ styles.fontText }>06789546</Text>
+                <Text style={ styles.fontText }>Número de teléfono:</Text>
+                <Text style={ styles.fontText }>{ profile.phone }</Text>
               </View>
               <View style={ styles.lastDataUser }>
-                <Text style={ styles.fontText }>Unidad policia:</Text>
-                <Text style={ styles.fontText }>CPNP HUACHOCOLPA</Text>
+                <Text style={ styles.fontText }>Teléfono de emergencia:</Text>
+                <Text style={ styles.fontText }>{ profile.emergencyNumber }</Text>
               </View>
             </View>
           </View>

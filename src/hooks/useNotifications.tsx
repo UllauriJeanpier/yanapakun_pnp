@@ -3,6 +3,7 @@ import { Platform } from 'react-native'
 import Constants from 'expo-constants'
 import * as Notifications from 'expo-notifications'
 import { Subscription } from '@unimodules/core'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const useNotifications = () => {
   const [expoPushToken, setExpoPushToken] = useState<string>()
@@ -11,10 +12,10 @@ const useNotifications = () => {
   const responseListener = useRef<Subscription>()
 
   useEffect(() => {
-    getPushToken().then((pushToken) => {
+    getPushToken().then(async (pushToken) => {
       setExpoPushToken(pushToken)
       if (pushToken) {
-        // Send Request
+        await AsyncStorage.setItem('tokenNotification', pushToken)
       }
     })
 
@@ -39,7 +40,7 @@ const useNotifications = () => {
 
   const getPushToken = async () => {
     if (!Constants.isDevice) {
-      alert('Debe usar un dispositivo fisico para recibir notificaciones')
+      alert('Debe usar un dispositivo físico para recibir notificaciones')
     }
 
     try {
@@ -61,7 +62,7 @@ const useNotifications = () => {
     }
 
     if (Platform.OS === 'android') {
-      Notifications.setNotificationChannelAsync('default', {
+      await Notifications.setNotificationChannelAsync('default', {
         name: 'default',
         importance: Notifications.AndroidImportance.MAX,
         vibrationPattern: [0, 250, 250, 250],

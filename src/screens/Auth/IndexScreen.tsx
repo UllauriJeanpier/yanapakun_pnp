@@ -30,14 +30,14 @@ const IndexScreen = ({ navigation }: Props) => {
       <View style={ styles.footerContainer }>
         <LogoPolicia width={ '35%' } height={ '100%' } />
         <View style={ styles.textContainer }>
-          <Text style={  styles.textBoldFooter  }>
-                 Policía Nacional del Perú
+          <Text style={ styles.textBoldFooter }>
+            Policía Nacional del Perú
           </Text>
-          <Text style={  styles.textBoldFooter  }>
-                al servicio de los ciudadanos
+          <Text style={ styles.textBoldFooter }>
+            al servicio de los ciudadanos
           </Text>
           <Text style={ styles.textFooter }>
-                Comisaría de Huancavelica
+            Comisaría de Huancavelica
           </Text>
         </View>
       </View>

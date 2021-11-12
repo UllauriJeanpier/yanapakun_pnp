@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
 import Button from '../../components/Button'
@@ -6,66 +6,91 @@ import Header from '../../components/Header'
 import InputForm from '../../components/InputForm'
 import { COLORS } from '../../utils/constants'
 import { RootStackParams, SignInScreenProps } from '../../utils/types'
-import { handleCPI, handlePassword } from '../../utils/validateFuntions'
+import { handleCPI, handleEmail, handlePassword } from '../../utils/validateFuntions'
+import { AuthContext } from '../../context/authContext'
+import Loading from '../../components/Loading'
 
-interface Props extends NativeStackScreenProps<RootStackParams, 'SignInScreen'>{}
+interface Props extends NativeStackScreenProps<RootStackParams, 'SignInScreen'> {
+}
 
 const SignInScreen = ({ navigation }: Props) => {
-
+  const [loading, setLoading] = useState(true)
+  const [email, setEmail] = useState('')
+  const [validateEmail, setValidateEmail] = useState(false)
   const [CPI, setCPI] = useState('')
   const [validateCPI, setValidateCPI] = useState(false)
   const [password, setPassword] = useState('')
   const [validatePassword, setValidatePassword] = useState(false)
 
+  const { signIn, authState } = useContext(AuthContext)
+
   const goToSignUp = () => navigation.navigate('SignUpScreen')
 
-  const login = () => {
-    if( CPI.length === 0 || password.length === 0 ) {
-      Alert.alert('Ingrese correctamente el CPI o contraseña')
-      return;
+  const goToIndex = () => navigation.navigate('IndexScreen')
+
+  const login = async () => {
+    if (email.length === 0 || password.length === 0) {
+      Alert.alert('El campo de correo o contraseña no puede estar vacío')
+      return
     }
-    console.log({CPI, password});
+    try {
+      setLoading(true)
+      await signIn({
+        email,
+        password
+      })
+      setLoading(false)
+    } catch (e) {
+      console.log(e)
+      setLoading(false)
+    }
   }
 
-  return (
-    <ScrollView>
-      <Header title="Iniciar sesión" navigation={ navigation }/>
-      <View style={ styles.container }>
-        <View style={ styles.inputsContainer }>
-          <InputForm
-            label={ 'Número de CPI:' }
-            placeholder={ 'CPI' }
-            valueInput={ CPI }
-            setValueInput={ setCPI }
-            validateInput={ validateCPI }
-            setValidateInput={ setValidateCPI }
-            functionValidation={ handleCPI }
-            errorMessage={ 'Escribe un CPI válido' }
-          />
-          <InputForm
-            label={ 'Contraseña:' }
-            placeholder={ 'Escriba su contraseña' }
-            valueInput={ password }
-            setValueInput={ setPassword }
-            validateInput={ validatePassword }
-            setValidateInput={ setValidatePassword }
-            functionValidation={ handlePassword }
-            errorMessage={ 'Escribe una contraseña válida' }
-            isPassword
-          />
-        </View>
-        <View style={ styles.sesionContainer }>
-          <Text style={ styles.txtInf }>Olvidaste tu contraseña</Text>
-          <Button title={ 'Iniciar sesión' }  action={ login }/>
-          <Text style={ styles.txtInf }>¿No estás registrado?{ ' ' }
-            <Text style={ styles.boldTxtInfo } onPress={ goToSignUp } >
-              Regístrate
-            </Text>
-          </Text>
-        </View>
+  useEffect(() => {
+    setLoading(false)
+  }, [])
 
-      </View>
-    </ScrollView>
+  return (
+    <Loading loading={ loading }>
+      <ScrollView>
+        <Header title="Iniciar sesión" navigation={ navigation }/>
+        <View style={ styles.container }>
+          <View style={ styles.inputsContainer }>
+            <InputForm
+              label={ 'Correo electrónico:' }
+              placeholder={ 'Escriba su correo electrónico' }
+              valueInput={ email }
+              setValueInput={ setEmail }
+              validateInput={ validateEmail }
+              setValidateInput={ setValidateEmail }
+              functionValidation={ handleEmail }
+              errorMessage={ 'Escribe un correo válido' }
+            />
+            <InputForm
+              label={ 'Contraseña:' }
+              placeholder={ 'Escriba su contraseña' }
+              valueInput={ password }
+              setValueInput={ setPassword }
+              validateInput={ validatePassword }
+              setValidateInput={ setValidatePassword }
+              functionValidation={ handlePassword }
+              errorMessage={ 'Escribe una contraseña válida' }
+              isPassword
+            />
+          </View>
+          <View style={ styles.sesionContainer }>
+            <Text style={ styles.txtInf }>Olvidaste tu contraseña</Text>
+            <Button title={ 'Iniciar sesión' } action={ login }/>
+            <Text style={ styles.txtInf }>¿No estás registrado?{ ' ' }
+              <Text style={ styles.boldTxtInfo } onPress={ goToSignUp }>
+                Regístrate
+              </Text>
+            </Text>
+          </View>
+
+        </View>
+      </ScrollView>
+    </Loading>
   )
 }
 
@@ -76,7 +101,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 25,
     paddingTop: 75,
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-evenly'
   },
   inputsContainer: {
     height: '50%',

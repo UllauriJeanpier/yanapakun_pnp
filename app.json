@@ -30,6 +30,7 @@
       },
       "permissions": ["NOTIFICATIONS"],
       "useNextNotificationsApi": true,
+      "googleServicesFile": "./google-services.json",
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyCMw0e5rnuW3QOGbMwts6tgYcqPP2yhUSE"

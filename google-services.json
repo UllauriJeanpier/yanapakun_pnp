@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "938950625640",
+    "project_id": "yanapakun-92047",
+    "storage_bucket": "yanapakun-92047.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:938950625640:android:0bf659b6a684b0a93faedd",
+        "android_client_info": {
+          "package_name": "com.likeseasons.yanapakun"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "938950625640-va5qetcubmehv9kln9hv9uet7jveokn7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcgLd_QGajo-wCDY_n-JClc99qUy4l3NU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "938950625640-va5qetcubmehv9kln9hv9uet7jveokn7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

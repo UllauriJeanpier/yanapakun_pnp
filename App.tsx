@@ -7,6 +7,7 @@ import { useFonts } from 'expo-font'
 import StackNavigator from './src/navigation/StackNavigator'
 import { COLORS, FONTS_TO_LOAD } from './src/utils/constants'
 import useNotifications from './src/hooks/useNotifications'
+import { AuthProvider } from './src/context/authContext'
 
 // Function that decides whether the notification is displayed or not
 
@@ -31,10 +32,20 @@ export default function App () {
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <StatusBar backgroundColor={ COLORS.SECONDARY }/>
-        <StackNavigator />
+        <AppState>
+          <StatusBar backgroundColor={ COLORS.SECONDARY }/>
+          <StackNavigator />
+        </AppState>
       </NavigationContainer>
     </SafeAreaProvider>
+  )
+}
+
+const AppState = ({ children }: any) => {
+  return (
+    <AuthProvider>
+      { children }
+    </AuthProvider>
   )
 }
 
