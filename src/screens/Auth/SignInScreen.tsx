@@ -25,7 +25,6 @@ const SignInScreen = ({ navigation }: Props) => {
       return;
     }
     console.log({CPI, password});
-    navigation.navigate('DrawerNavigator')
   }
 
   return (

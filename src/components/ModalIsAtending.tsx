@@ -1,23 +1,29 @@
 import React from 'react'
-import { View, Modal, StyleSheet, Text, TouchableOpacity } from 'react-native';
-import Alert from '../assets/svg/Alarma2.svg'
+import { Modal, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { FONTS } from '../utils/constants';
+import Alert from '../assets/svg/Alarma.svg'
+import Close from '../assets/svg/Closegreen.svg'
 
 interface Props {
     isVisible: boolean
     hideAction: () => void
 }
 
-export const ModalEmergency = ({ isVisible, hideAction }: Props) => {
+export const ModalIsBeingAttended = ({ isVisible, hideAction }: Props) => {
     return (
         <Modal transparent={ true } visible={ isVisible }>
             <View style={ styles.containerFondo }>
                 <View style={ styles.containerModal }>
+                <TouchableOpacity
+                    style={ styles.iconClose }
+                    onPress={ hideAction }
+                >
+                    <Close width={ 20 } height={ 20 } />
+                </TouchableOpacity>
+                <View style={ styles.dataShow }>
                     <Alert style={{marginTop: 40}}/>
-                    <Text style={ styles.text }>Marisol Ochoa tiene una emergencia y solicita tu ayuda</Text>
-                    <TouchableOpacity style={ styles.btn } onPress={ hideAction }>
-                        <Text style={ styles.btnText }>Visualizar ubicación</Text>
-                    </TouchableOpacity>
+                    <Text style={ styles.text }>Esta emergencia ya está siendo atendida por otra autoridad.</Text>
+                </View>    
                 </View>
             </View>
         </Modal>
@@ -39,6 +45,11 @@ const styles = StyleSheet.create({
       backgroundColor: '#FFFCF7',
       borderRadius: 20
     },
+    dataShow: {
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'        
+      },
     text: {
       color: '#3A413D',
       fontSize: 18,
@@ -46,14 +57,11 @@ const styles = StyleSheet.create({
       textAlign: 'center',
       marginVertical: 30
     },
-    btn: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingVertical: 15,
-        backgroundColor: '#216D3F',
-        borderRadius: 25,
-        width: '100%',
-        marginBottom: 15
+    iconClose: {
+        position: 'absolute',
+        padding: 12,
+        top: 0,
+        right: 0
     },
     btnText: {
         fontSize: 16,
