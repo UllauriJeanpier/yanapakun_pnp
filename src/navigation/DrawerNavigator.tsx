@@ -1,6 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-
-import React from 'react'
+import React, { useContext } from 'react'
 import {
   View,
   Text,
@@ -9,8 +8,7 @@ import {
 } from 'react-native'
 import {
   createDrawerNavigator,
-  DrawerContentComponentProps,
-  DrawerContentScrollView
+  DrawerContentComponentProps
 } from '@react-navigation/drawer'
 import HomeScreen from '../screens/Home/HomeScreen'
 
@@ -19,6 +17,7 @@ import HistoryScreen from '../screens/Home/HistoryScreen'
 import DrawerLogo from '../assets/svg/PoliciaLogoHorizontal.svg'
 import { COLORS, FONTS } from '../utils/constants'
 import { RootDrawerParams } from '../utils/types'
+import { AuthContext } from '../context/authContext'
 
 const Drawer = createDrawerNavigator<RootDrawerParams>()
 
@@ -27,38 +26,43 @@ const DrawerNavigator = () => {
     <Drawer.Navigator
       initialRouteName={ 'HomeScreen' }
       screenOptions={ { headerShown: false } }
-      drawerContent={ props => <CustomDrawer { ...props } /> } >
-      <Drawer.Screen name="HomeScreen" component={ HomeScreen } />
-      <Drawer.Screen name="ProfileScreen" component={ ProfileScreen } />
-      <Drawer.Screen name="HistoryScreen" component={ HistoryScreen } />
+      drawerContent={ props => <CustomDrawer { ...props } /> }>
+      <Drawer.Screen name="HomeScreen" component={ HomeScreen }/>
+      <Drawer.Screen name="ProfileScreen" component={ ProfileScreen }/>
+      <Drawer.Screen name="HistoryScreen" component={ HistoryScreen }/>
     </Drawer.Navigator>
   )
 }
 
 const CustomDrawer = ({ navigation }: DrawerContentComponentProps) => {
+  const { logOut } = useContext(AuthContext)
+
+  const logout = () => {
+    logOut()
+  }
   return (
 
     <View style={ styles.container }>
       <View style={ styles.iconContainer }>
-        <DrawerLogo width={ '80%' } height={ '100%' } />
+        <DrawerLogo width={ '80%' } height={ '100%' }/>
       </View>
       { /* Opciones  */ }
       <View style={ styles.optionsContainer }>
         <View>
           <BtnOption
             title={ 'Inicio' }
-            action={ () => navigation.navigate('HomeScreen') } />
+            action={ () => navigation.navigate('HomeScreen') }/>
           <BtnOption
             title={ 'Perfil' }
-            action={ () => navigation.navigate('ProfileScreen') } />
+            action={ () => navigation.navigate('ProfileScreen') }/>
           <BtnOption
             title={ 'Historial de emergencias' }
-            action={ () => navigation.navigate('HistoryScreen') } />
+            action={ () => navigation.navigate('HistoryScreen') }/>
         </View>
         <BtnOption
           title={ 'Cerrar sesión' }
           isLogoutOption
-          action={ () => navigation.navigate('SignInScreen') } />
+          action={ logout }/>
       </View>
     </View>
   )
@@ -74,7 +78,11 @@ interface BtnOptionsProps {
   action?: () => void
 }
 
-const BtnOption = ({ title, isLogoutOption, action }: BtnOptionsProps) => {
+const BtnOption = ({
+  title,
+  isLogoutOption,
+  action
+}: BtnOptionsProps) => {
   return (
     <TouchableOpacity
       style={

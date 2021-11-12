@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { StyleSheet } from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
@@ -8,16 +8,24 @@ import IndexScreen from '../screens/Auth/IndexScreen'
 
 import DrawerNavigator from './DrawerNavigator'
 import { RootStackParams } from '../utils/types'
+import { AuthContext } from '../context/authContext'
 
 const Stack = createNativeStackNavigator<RootStackParams>()
 
 const StackNavigator = () => {
+  const { authState } = useContext(AuthContext)
+
   return (
     <Stack.Navigator screenOptions={ { headerShown: false } }>
-      <Stack.Screen name="IndexScreen" component={ IndexScreen } />
-      <Stack.Screen name="SignInScreen" component={ SignInScreen } />
-      <Stack.Screen name="SignUpScreen" component={ SignUpScreen } />
-      <Stack.Screen name="DrawerNavigator" component={ DrawerNavigator } />
+      { !authState.isLogIn && !authState.token
+        ? (<>
+          <Stack.Screen name="IndexScreen" component={ IndexScreen }/>
+          <Stack.Screen name="SignInScreen" component={ SignInScreen }/>
+          <Stack.Screen name="SignUpScreen" component={ SignUpScreen }/>
+        </>)
+        : (<>
+          <Stack.Screen name="DrawerNavigator" component={ DrawerNavigator }/>
+        </>) }
     </Stack.Navigator>
   )
 }
