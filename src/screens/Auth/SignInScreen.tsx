@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
 import Button from '../../components/Button'
 import Header from '../../components/Header'
 import InputForm from '../../components/InputForm'

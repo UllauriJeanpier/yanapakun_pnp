@@ -15,6 +15,7 @@ import Reject from '../../assets/svg/notDisturbon.svg'
 import ModalNotification from '../../components/ModalNotification'
 import { getCallHelp } from '../../services/yanapakun/callHelp'
 import { CallHelp } from '../../interfaces/callHelp'
+import { ModalEmergency } from '../../components/ModalEmergency'
 
 interface Props extends HistoryScreenProps{}
 
@@ -63,6 +64,7 @@ const HistoryScreen = ({ navigation }: Props) => {
   ]
 
   const [atention, setAtention] = useState(false)
+  const [modal, setModal] = useState(true)
   const [user, onChangeUser] = useState<CallHelp>()
 
   useEffect(() => {
@@ -116,6 +118,15 @@ const HistoryScreen = ({ navigation }: Props) => {
           { /*  hideAction={ () => setAtention(false) } */ }
           { /*  user={ user } */ }
           { /* /> */ }
+          {/*<ModalNotification*/}
+          {/*  isVisible={ atention }*/}
+          {/*  hideAction={ () => setAtention(false)}*/}
+          {/*  user={ user }*/}
+          {/*/>*/}
+          <ModalEmergency
+            isVisible={ modal }
+            hideAction={ () => setModal(false)}
+          />
         </View>
       </ScrollView>
     </SafeAreaView>
