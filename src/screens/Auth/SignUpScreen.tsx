@@ -1,5 +1,5 @@
-import React, { useState }  from 'react'
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import React, { useState, useEffect }  from 'react'
+import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native'
 import Checkbox from 'expo-checkbox'
 import { SignUpScreenProps } from '../../utils/types'
 import Header from '../../components/Header'
@@ -14,12 +14,15 @@ import {
   handlePassword
 } from '../../utils/validateFuntions'
 import InputForm from '../../components/InputForm'
-import { COLORS } from '../../utils/constants'
+import { COLORS, FONTS } from '../../utils/constants'
 import Button from '../../components/Button'
+import Loading from '../../components/Loading'
+import { userSignUp } from '../../services/yanapakun/sigup'
 
 interface Props extends SignUpScreenProps{}
 
 const SignUpScreen = ({ navigation }: Props) => {
+  const [loading, setLoading] = useState(true)
   const [names, setNames] = useState('')
   const [validateName, setValidateName] = useState(false)
   const [surnames, setSurnames] = useState('')
@@ -30,8 +33,8 @@ const SignUpScreen = ({ navigation }: Props) => {
   const [validateAge, setValidateAge] = useState(false)
   const [DNI, setDNI] = useState('')
   const [validateDNI, setValidateDNI] = useState(false)
-  const [distrit, setDistrit] = useState('')
-  const [validateDistrit, setValidateDistrit] = useState(false)
+  const [district, setDistrict] = useState('')
+  const [validateDistrict, setValidateDistrict] = useState(false)
   const [unitPolice, setUnitPolice] = useState('')
   const [validateUnitPolice, setValidateUnitPolice] = useState(false)
   const [email, setEmail] = useState('')
@@ -44,11 +47,46 @@ const SignUpScreen = ({ navigation }: Props) => {
 
   const goToSignIn = () => navigation.navigate('SignInScreen')
 
-  const registro = () => {
-    console.log('Este es un registro')
+  const registro = async () => {
+    if (names.length === 0 || surnames.length === 0 || age.length === 0 || DNI.length === 0 || CPI.length === 0 || district.length ===0 || unitPolice.length === 0 ||email.length === 0 || password.length === 0 || confirmPassword !== password || confirmPassword.length === 0  || !isChecked) {
+      Alert.alert('Rellene los campos correctamente')
+      return
+    }
+    try {
+      setLoading(true)
+      await userSignUp({
+        numberCIP: CPI,
+        email,
+        password,
+        roles: ['admin'],
+        isActive: true,
+        firstName: names,
+        lastName: surnames,
+        age: parseInt(age),
+        phone: '',
+        emergencyNumber: '',
+        document: DNI,
+        district,
+        gender: '',
+        dateBirth: new Date(),
+        latitude: '',
+        longitude: ''
+      })
+      setLoading(true)
+      goToSignIn()
+    } catch (err) {
+      console.log(err);
+      setLoading(false)
+    } 
   }
+
+  useEffect(() => {
+    setLoading(false)
+  }, [])
+
   return (
-    <ScrollView>
+    <Loading loading={ loading } >
+      <ScrollView>
       <Header title="Regístrate" navigation={navigation}/>
       <View style={ styles.container }>
         <InputForm
@@ -90,6 +128,7 @@ const SignUpScreen = ({ navigation }: Props) => {
           validateInput={ validateDNI }
           setValidateInput={ setValidateDNI }
           functionValidation={ handleDNI }
+          keyboardType="numeric"
           errorMessage={ 'Escribe un DNI válido' }
         />
 
@@ -101,16 +140,17 @@ const SignUpScreen = ({ navigation }: Props) => {
           validateInput={ validateCPI }
           setValidateInput={ setValidateCPI }
           functionValidation={ handleCPI }
+          keyboardType="numeric"
           errorMessage={ 'Escribe un CPI válido' }
         />
 
         <InputForm
           label={ 'Distrito:' }
           placeholder={ 'Distrito' }
-          valueInput={ distrit }
-          setValueInput={ setDistrit }
-          validateInput={ validateDistrit }
-          setValidateInput={ setValidateDistrit }
+          valueInput={ district }
+          setValueInput={ setDistrict }
+          validateInput={ validateDistrict }
+          setValidateInput={ setValidateDistrict }
           functionValidation={ handleDistrit }
           errorMessage={ 'Escribe un distrito válido' }
         />
@@ -156,9 +196,16 @@ const SignUpScreen = ({ navigation }: Props) => {
           validateInput={ validateConfirmPassword }
           setValidateInput={ setValidateConfirmPassword }
           functionValidation={ handlePassword }
-          errorMessage={ 'Escribe una contraseña válida' }
+          // errorMessage={ 'Escribe una contraseña válida' }
           isPassword
         />
+        {
+          password !== confirmPassword
+            ? (
+              <Text style={ styles.errorMsg }>Las contraseñas no coinciden</Text>
+              )
+            : null
+        }
         <View style={ styles.checkSection }>
           <Checkbox
             style={ styles.checkbox }
@@ -176,7 +223,9 @@ const SignUpScreen = ({ navigation }: Props) => {
         </Text>
       </View>
     </ScrollView>
-  )
+  
+    </Loading>
+    )
 }
 
 export default SignUpScreen
@@ -205,5 +254,11 @@ const styles = StyleSheet.create({
   },
   boldTxtInfo: {
     fontWeight: 'bold'
+  },
+  errorMsg: {
+    margin: 5,
+    fontSize: 15,
+    fontFamily: FONTS.ProximaNovaRegular,
+    color: 'red'
   }
 })
