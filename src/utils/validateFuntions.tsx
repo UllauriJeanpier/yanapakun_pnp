@@ -45,7 +45,7 @@ export const handleDistrit = (text: string) => {
 
 // Por validar la unidad policial
 export const handleUnitPolice = (text: string) => {
-  if (text.length < 3) {
+  if (text.length < 6) {
     return false
   } else {
     return true

@@ -1,5 +1,7 @@
 import { DrawerNavigationProp, DrawerScreenProps } from '@react-navigation/drawer'
 import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack'
+import { CallHelp } from '../interfaces/callHelp'
+import { LocationUserScreen } from '../screens/Home/LocationUserScreen';
 
 // Main Stack Screens params
 
@@ -16,19 +18,24 @@ export type RootDrawerParams = {
   HomeScreen: undefined
   ProfileScreen: undefined
   HistoryScreen: undefined
+  LocationUserScreen: undefined
+  // LocationUserScreen: {
+  //   user: CallHelp
+  // }
 }
 
-// SreenProps Stack Screens
+// ScreenProps Stack Screens
 
 export type SignInScreenProps = NativeStackScreenProps<RootStackParams, 'SignInScreen'>
 export type SignUpScreenProps = NativeStackScreenProps<RootStackParams, 'SignUpScreen'>
 export type IndexScreen = NativeStackScreenProps<RootStackParams, 'IndexScreen'>
 
-// SreenProps Drawer Screens
+// ScreenProps Drawer Screens
 
 export type HomeScreenProps = DrawerScreenProps<RootDrawerParams, 'HomeScreen'>
 export type ProfileScreenProps = DrawerScreenProps<RootDrawerParams, 'ProfileScreen'>
 export type HistoryScreenProps = DrawerScreenProps<RootDrawerParams, 'HistoryScreen'>
+export type LocationUserScreenProps = DrawerScreenProps<RootDrawerParams, 'LocationUserScreen'>
 
 // Navigation Prop
 
@@ -37,9 +44,10 @@ export type NavigationSignUpProp = NativeStackNavigationProp<RootStackParams, 'S
 export type NavigationHomeProp = DrawerNavigationProp<RootDrawerParams, 'HomeScreen'>
 export type NavigationProfileProp = DrawerNavigationProp<RootDrawerParams, 'ProfileScreen'>
 export type NavigationHistoryProp = DrawerNavigationProp<RootDrawerParams, 'HistoryScreen'>
+export type NavigationLocationUserProp = DrawerNavigationProp<RootDrawerParams, 'LocationUserScreen'>
 
 export type NavigationStackProp = NavigationSignInProp | NavigationSignUpProp
-export type NavigationDrawerProp = NavigationHomeProp | NavigationProfileProp | NavigationHistoryProp
+export type NavigationDrawerProp = NavigationHomeProp | NavigationProfileProp | NavigationHistoryProp | NavigationLocationUserProp
 export type NavigationScreenProp = NavigationStackProp | NavigationDrawerProp
 
 // type predicates verification

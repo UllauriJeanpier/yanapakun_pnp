@@ -12,20 +12,20 @@ interface Props {
   user: CallHelp
 }
 
-interface User {
-  userName: string
-  time: string
-  id?: number
-  atention: boolean
-}
-
 const ModalNotification = ({
   isVisible = false,
   hideAction,
   user
 }: Props) => {
   const [textDescription, setTextDescription] = useState('')
-  console.log(textDescription)
+
+  const getHour = ( createdAt: string ) => {
+    return  createdAt.substring(11,16)
+  }
+  const getDay = (createdAt: string ) => {
+    return  parseInt(createdAt.substring(8,10))
+  }
+  const date = new Date().getDate()
 
   return (
     <Modal transparent={ true } visible={ isVisible }>
@@ -37,10 +37,10 @@ const ModalNotification = ({
             <Close width={ 20 } height={ 20 }/>
           </TouchableOpacity>
           <View style={ styles.dataShow }>
-            <Text style={ styles.userName }>{ user.e }</Text>
-            <Text style={ styles.time }>Hoy { user.time }</Text>
+            <Text style={ styles.userName }>{ `${user.user.profile.firstName} ${user.user.profile.lastName}` }</Text>
+            <Text style={ styles.time }>{ (getDay(user.createdAt) > date) ? 'Ayer' :'Hoy' } { getHour(user.createdAt) }</Text>
             {
-              user.atention
+              !user.isActive
                 ? <View style={ styles.atentionContainer }>
                   <Ready width={ 40 } height={ 40 }/>
                   <Text style={ styles.textGreen }>Atendida</Text>
@@ -57,7 +57,7 @@ const ModalNotification = ({
               editable
               maxLength={ 400 }
               multiline
-              numberOfLines={ 4 }
+              numberOfLines={ 6 }
               onChangeText={ text => setTextDescription(text) }
               value={ textDescription }
               style={ styles.inputDescription }
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     marginBottom: 6
   },
   inputDescription: {
-    height: 134,
+    height: 130,
     backgroundColor: 'white',
     borderRadius: 12,
     borderColor: '#e3e3e3',

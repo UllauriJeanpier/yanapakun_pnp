@@ -35,8 +35,8 @@ const SignUpScreen = ({ navigation }: Props) => {
   const [validateDNI, setValidateDNI] = useState(false)
   const [district, setDistrict] = useState('')
   const [validateDistrict, setValidateDistrict] = useState(false)
-  const [unitPolice, setUnitPolice] = useState('')
-  const [validateUnitPolice, setValidateUnitPolice] = useState(false)
+  const [policeUnit, setPoliceUnit] = useState('')
+  const [validatePoliceUnit, setValidatePoliceUnit] = useState(false)
   const [email, setEmail] = useState('')
   const [validateEmail, setValidateEmail] = useState(false)
   const [password, setPassword] = useState('')
@@ -48,7 +48,7 @@ const SignUpScreen = ({ navigation }: Props) => {
   const goToSignIn = () => navigation.navigate('SignInScreen')
 
   const registro = async () => {
-    if (names.length === 0 || surnames.length === 0 || age.length === 0 || DNI.length === 0 || CPI.length === 0 || district.length ===0 || unitPolice.length === 0 ||email.length === 0 || password.length === 0 || confirmPassword !== password || confirmPassword.length === 0  || !isChecked) {
+    if (names.length === 0 || surnames.length === 0 || age.length === 0 || DNI.length === 0 || CPI.length === 0 || district.length ===0 ||email.length === 0 || password.length === 0 || confirmPassword !== password || confirmPassword.length === 0  || !isChecked) {
       Alert.alert('Rellene los campos correctamente')
       return
     }
@@ -56,9 +56,10 @@ const SignUpScreen = ({ navigation }: Props) => {
       setLoading(true)
       await userSignUp({
         numberCIP: CPI,
+        policeUnit,
         email,
         password,
-        roles: ['admin'],
+        roles: ['police'],
         isActive: true,
         firstName: names,
         lastName: surnames,
@@ -156,12 +157,12 @@ const SignUpScreen = ({ navigation }: Props) => {
         />
 
         <InputForm
-          label={ 'Unidad policial:' }
-          placeholder={ 'Unidad policial' }
-          valueInput={ unitPolice }
-          setValueInput={ setUnitPolice}
-          validateInput={ validateUnitPolice }
-          setValidateInput={ setValidateUnitPolice }
+          label={ 'Unidad Policial:' }
+          placeholder={ 'Unidad Policial' }
+          valueInput={ policeUnit }
+          setValueInput={ setPoliceUnit }
+          validateInput={ validatePoliceUnit }
+          setValidateInput={ setValidatePoliceUnit }
           functionValidation={ handleUnitPolice }
           errorMessage={ 'Escribe una unidad policial válida' }
         />
