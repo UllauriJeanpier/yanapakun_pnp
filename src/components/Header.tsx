@@ -49,7 +49,6 @@ const styles = StyleSheet.create({
     left: 25
   },
   title: {
-
     color: 'white',
     fontSize: 18,
     fontFamily: FONTS.ProximaNovaBold

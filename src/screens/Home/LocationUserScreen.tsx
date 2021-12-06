@@ -6,6 +6,10 @@ import { CallHelp } from '../../interfaces/callHelp';
 import MapView, { Marker } from 'react-native-maps';
 import Button from '../../components/Button';
 import { FONTS } from '../../utils/constants';
+import { ModalEmergency } from '../../components/ModalEmergency';
+import { IPosition } from '../../interfaces/LocationInterface';
+import PersonaIcon from '../../assets/svg/ubicación-persona.svg'
+import GreenPosition from '../../assets/svg/placeholder.svg'
 
 const { height } = Dimensions.get('window')
 
@@ -19,8 +23,9 @@ interface RouteParams {
 
 export const LocationUserScreen = ({ navigation, route }: Props) => {
 
-    const params = route.params;
+    // const params = route.params;
     const [isActive, setIsActive] = useState(false)
+    const [modal, setModal] = useState(true)
     const location = {
         latitude: 37.78825,
         longitude: -122.4324,
@@ -33,16 +38,20 @@ export const LocationUserScreen = ({ navigation, route }: Props) => {
           <View>
             <Header title="Historial de Emergencias" navigation={ navigation } />
             <View style={ styles.container }>
+                <TouchableOpacity 
+                    style={ styles.toUserPerfil }
+                    onPress={ () =>  navigation.navigate('ProfileUser') }
+                >
+                    <Text style={ styles.toUserPerfilTxt }>Ir al perfil</Text>
+                </TouchableOpacity>
                 <MapView
                     mapType="standard"
                     style={ styles.mapContainer }
                     initialRegion={ location }
                 >
-                    <Marker
-                        key={ 0 }
-                        coordinate={location}
-                        title={'Elsa'}
-                        description={'Hola como estas'}
+                    <CustomMarker
+                        location={ location }
+                        title={ 'User' }
                     />
                 </MapView>
                 <View style={ styles.containBtns }>
@@ -85,19 +94,61 @@ export const LocationUserScreen = ({ navigation, route }: Props) => {
 
                 </View>
             </View>
+            <ModalEmergency
+                isVisible={ modal }
+                hideAction={ () => setModal(false)}
+            />
           </View>
         </SafeAreaView>
        )
 }
 
+interface PropsMarker {
+    location: IPosition
+    title: string
+  }
+  
+  const CustomMarker = ({ location, title }: PropsMarker) => {
+    return (
+      <Marker coordinate={ location }>
+            <View style={ styles.positionContainer }>
+            <View style={ styles.imageIconContainer }>
+                <PersonaIcon width={ '100%' } height={ '100%' } />
+            </View>
+            <View style={ styles.containerIcon }>
+                <Text style={ styles.txtIcon }>{ title }</Text>
+            </View>
+            <View style={ styles.markerIconContainer }>
+                <GreenPosition width={ '50%' } height={ '100%' } />
+            </View>
+            </View>
+      </Marker>
+    )
+  }
+
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'yellow'
+        backgroundColor: 'transparent'
+    },
+    toUserPerfil:{
+        zIndex: 9999,
+        position: 'absolute',
+        top: '10%',
+        right: 20,
+        backgroundColor: '#8F9290',
+    },
+    toUserPerfilTxt:{
+        color: '#fff',
+        fontSize: 18,
+        fontFamily: FONTS.ProximaNovaBold,
+        paddingVertical: 4,
+        paddingHorizontal: 5,
+        borderRadius: 3,
+        borderWidth: 1,
     },
     mapContainer : {
         width: '100%',
         height: '100%',
-        backgroundColor: 'blue'
     },
     containBtns: {
         height: '20%',
@@ -126,5 +177,34 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 18,
         fontFamily: FONTS.ProximaNovaBold
-    }
+    },
+    positionContainer: {
+        width: 110,
+        height: 90
+      },
+      imageIconContainer: {
+        flex: 5,
+        alignItems: 'center',
+        justifyContent: 'center'
+      },
+      containerIcon: {
+        width: '70%',
+        top: 18,
+        marginLeft: '30%',
+        marginRight: '10%',
+        position: 'absolute'
+      },
+      txtIcon: {
+        textAlign: 'center',
+        position: 'relative',
+        zIndex: 10,
+        fontFamily: FONTS.ProximaNovaBold,
+        fontSize: 16,
+        color: '#FFFCF7'
+      },
+      markerIconContainer: {
+        flex: 2,
+        alignItems: 'center',
+        justifyContent: 'center'
+      }
 })

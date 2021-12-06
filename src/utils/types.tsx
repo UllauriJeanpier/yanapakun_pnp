@@ -19,6 +19,7 @@ export type RootDrawerParams = {
   ProfileScreen: undefined
   HistoryScreen: undefined
   LocationUserScreen: undefined
+  ProfileUser: undefined
   // LocationUserScreen: {
   //   user: CallHelp
   // }

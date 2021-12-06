@@ -31,7 +31,7 @@ const HistoryScreen = ({ navigation }: Props) => {
   }
 
   const [atention, setAtention] = useState(false)
-  const [modal, setModal] = useState(true)
+  
   const [user, onChangeUser] = useState<CallHelp>()
 
   const getHour = ( createdAt: string ) => {
@@ -94,11 +94,6 @@ const HistoryScreen = ({ navigation }: Props) => {
               })
             }
           </View>
-          
-          <ModalEmergency
-            isVisible={ modal }
-            hideAction={ () => setModal(false)}
-          />
         </View>
       </ScrollView>
     </SafeAreaView>
