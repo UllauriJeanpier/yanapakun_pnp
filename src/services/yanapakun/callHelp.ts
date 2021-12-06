@@ -11,3 +11,7 @@ export const getCallHelp = async () => {
 export const getOneCallHelp = async (id: number) => {
   return await Api.get(`/call-help/${id}`)
 }
+
+export const statusCallHelp = async (id: number, description: string, status: string) => {
+  return await Api.patch(`/call-help/status/${id}`, { description, status })
+}

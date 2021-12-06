@@ -19,13 +19,6 @@ import { ModalEmergency } from '../../components/ModalEmergency'
 
 interface Props extends HistoryScreenProps{}
 
-interface DataNotification {
-  userName: string
-  time: string
-  id: number
-  atention: boolean
-}
-
 const HistoryScreen = ({ navigation }: Props) => {
   const [callsHelp, setCallsHelp] = useState<CallHelp[]>([])
   const getCallsHelp = async () => {
@@ -36,36 +29,19 @@ const HistoryScreen = ({ navigation }: Props) => {
       console.log(e)
     }
   }
-  const userNotifications: DataNotification[] = [
-    {
-      userName: 'Marisol Ochoa',
-      id: 1,
-      time: '19:20',
-      atention: true
-    }
-    // {
-    //   userName: 'Juan Garcia',
-    //   id: 2,
-    //   time: '08:10',
-    //   atention: false
-    // },
-    // {
-    //   userName: 'Amanda Aguirre',
-    //   id: 3,
-    //   time: '23:53',
-    //   atention: true
-    // },
-    // {
-    //   userName: 'Camila Rios',
-    //   id: 4,
-    //   time: '23:53',
-    //   atention: true
-    // }
-  ]
 
   const [atention, setAtention] = useState(false)
-  const [modal, setModal] = useState(true)
+  
   const [user, onChangeUser] = useState<CallHelp>()
+
+  const getHour = ( createdAt: string ) => {
+    return  createdAt.substring(11,16)
+  }
+  const getDay = (createdAt: string ) => {
+    return  parseInt(createdAt.substring(8,10))
+  }
+  const date = new Date().getDate()
+  
 
   useEffect(() => {
     getCallsHelp().then(() => console.log('get calls help'))
@@ -74,23 +50,22 @@ const HistoryScreen = ({ navigation }: Props) => {
     <SafeAreaView style={ styles.container }>
       <ScrollView>
         <View>
-          <Header title="Historial de Emergencias" navigation={ navigation } hasDrawer />
-          <Text>{ callsHelp.length }</Text>
+          <Header title="Historial de Emergencias" navigation={ navigation } />
           <View style={ styles.containNotifications }>
             {
-              callsHelp.map((callHep: CallHelp, index: number) => {
+              callsHelp.map((callHelp: CallHelp, index: number) => {
                 return (
                   <View style={ styles.notification } key={ index }>
-                    <View>
-                      <Text style={ styles.emergencyUser }>{ callHep.user.email }</Text>
-                      <Text style={ styles.emergencyTime }>Hoy { callHep.createdAt }</Text>
-                    </View>
+                    <TouchableOpacity onPress={() => navigation.navigate('LocationUserScreen')}>
+                      <Text style={ styles.emergencyUser }>{ `${callHelp.user.profile.firstName} ${callHelp.user.profile.lastName}` }</Text>
+                      <Text style={ styles.emergencyTime }>{ (getDay(callHelp.createdAt) > date) ?'Ayer': 'Hoy'  } { getHour(callHelp.createdAt) }</Text>
+                    </TouchableOpacity>
                     {
-                      !callHep.status
+                      callHelp.status
                         ? <TouchableOpacity
                             style={ styles.btn }
                             onPress={ () => {
-                              onChangeUser(callHep)
+                              onChangeUser(callHelp)
                               setAtention(true)
                             } }
                     >
@@ -100,7 +75,7 @@ const HistoryScreen = ({ navigation }: Props) => {
                         : <TouchableOpacity
                             style={ styles.btn }
                             onPress={ () => {
-                              onChangeUser(callHep)
+                              onChangeUser(callHelp)
                               setAtention(true)
                             } }
                     >
@@ -108,25 +83,17 @@ const HistoryScreen = ({ navigation }: Props) => {
                           <Text style={ styles.btnGreen }>Atendida</Text>
                         </TouchableOpacity>
                     }
+                    {/* <ModalNotification 
+                      isVisible={ atention }
+                      key={ index }
+                      hideAction={ () => setAtention(false) }
+                      user={ user! }
+                    /> */}
                   </View>
                 )
               })
             }
           </View>
-          { /* <ModalNotification */ }
-          { /*  isVisible={ atention } */ }
-          { /*  hideAction={ () => setAtention(false) } */ }
-          { /*  user={ user } */ }
-          { /* /> */ }
-          {/*<ModalNotification*/}
-          {/*  isVisible={ atention }*/}
-          {/*  hideAction={ () => setAtention(false)}*/}
-          {/*  user={ user }*/}
-          {/*/>*/}
-          <ModalEmergency
-            isVisible={ modal }
-            hideAction={ () => setModal(false)}
-          />
         </View>
       </ScrollView>
     </SafeAreaView>

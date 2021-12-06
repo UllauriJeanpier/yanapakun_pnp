@@ -18,6 +18,8 @@ import DrawerLogo from '../assets/svg/PoliciaLogoHorizontal.svg'
 import { COLORS, FONTS } from '../utils/constants'
 import { RootDrawerParams } from '../utils/types'
 import { AuthContext } from '../context/authContext'
+import { LocationUserScreen } from '../screens/Home/LocationUserScreen'
+import ProfileUser from '../screens/Home/ProfileUser'
 
 const Drawer = createDrawerNavigator<RootDrawerParams>()
 
@@ -30,6 +32,8 @@ const DrawerNavigator = () => {
       <Drawer.Screen name="HomeScreen" component={ HomeScreen }/>
       <Drawer.Screen name="ProfileScreen" component={ ProfileScreen }/>
       <Drawer.Screen name="HistoryScreen" component={ HistoryScreen }/>
+      <Drawer.Screen name="LocationUserScreen" component={ LocationUserScreen }/>
+      <Drawer.Screen name="ProfileUser" component={ ProfileUser }/>
     </Drawer.Navigator>
   )
 }

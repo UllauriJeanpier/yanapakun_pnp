@@ -21,7 +21,7 @@ interface ProfileData {
   dateBirth: string
   district: string
   document: string
-  emergencyNumber: string
+  policeUnit: string
   firstName: string
   gender: string
   id: number
@@ -42,8 +42,8 @@ const ProfileScreen = ({ navigation }: Props) => {
     dateBirth: '',
     district: '',
     document: '',
-    emergencyNumber: '',
     firstName: '',
+    policeUnit: '',
     gender: '',
     id: 0,
     lastName: '',
@@ -184,12 +184,12 @@ const ProfileScreen = ({ navigation }: Props) => {
                 <Text style={ styles.fontText }>{ profile.user.email }</Text>
               </View>
               <View style={ styles.dataUser }>
-                <Text style={ styles.fontText }>Número de teléfono:</Text>
+                <Text style={ styles.fontText }>CPI:</Text>
                 <Text style={ styles.fontText }>{ profile.phone }</Text>
               </View>
               <View style={ styles.lastDataUser }>
-                <Text style={ styles.fontText }>Teléfono de emergencia:</Text>
-                <Text style={ styles.fontText }>{ profile.emergencyNumber }</Text>
+                <Text style={ styles.fontText }>Unidad Policial:</Text>
+                <Text style={ styles.fontText }>{ profile.policeUnit }</Text>
               </View>
             </View>
           </View>

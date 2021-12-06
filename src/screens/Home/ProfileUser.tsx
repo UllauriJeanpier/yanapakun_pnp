@@ -15,7 +15,7 @@ const ProfileUser = ({ navigation }: Props) => {
     <SafeAreaView style={ styles.container }>
       <ScrollView>
         <View>
-          <Header title='Yanapakun Policía H.' navigation={ navigation } />
+          <Header title='Yanapakun Policía H.' navigation={ navigation}/>
           <View>
             <View style={ styles.containPhotoUser }>
               <View style={ styles.UserPhoto }>
@@ -29,6 +29,7 @@ const ProfileUser = ({ navigation }: Props) => {
                         )
                       : ( <UserPhoto/> ) 
                 } */}
+                <UserPhoto />
               </View>
             </View>
             <View style={ styles.data }>
@@ -52,7 +53,7 @@ const ProfileUser = ({ navigation }: Props) => {
                 <Text style={ styles.fontText }>Nro de Teléfono:</Text>
                 <Text style={ styles.fontText }>946845604</Text>
               </View>
-              <View style={ styles.dataUser }>
+              <View style={ styles.lastDataUser }>
                 <Text style={ styles.fontText }>Teléfono de emergencia::</Text>
                 <Text style={ styles.fontText }>946845604</Text>
               </View>
