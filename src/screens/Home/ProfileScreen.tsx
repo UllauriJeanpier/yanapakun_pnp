@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { ScrollView, StyleSheet, Text, View, TouchableOpacity, Platform, Image } from 'react-native'
+import { ScrollView, StyleSheet, Text, View, TouchableOpacity, Platform, Image, Alert } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Header from '../../components/Header'
 import { ProfileScreenProps } from '../../utils/types'
@@ -93,7 +93,7 @@ const ProfileScreen = ({ navigation }: Props) => {
         cameraRollStatus.status !== 'granted' ||
         cameraStatus.status !== 'granted'
       ) {
-        alert('Lo sentimos, necesitamos estos permisos para que esto funcione.')
+        Alert.alert('Lo sentimos, necesitamos estos permisos para que esto funcione.')
       }
     }
   }
@@ -131,7 +131,7 @@ const ProfileScreen = ({ navigation }: Props) => {
       }
     } catch (e) {
       console.log({ e })
-      alert('Upload failed, sorry :(')
+      alert('Hubo un error al subir la imagen')
     }
   }
 

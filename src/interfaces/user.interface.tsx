@@ -21,7 +21,7 @@ export interface Profile {
   district: string
   phone: string
   emergencyNumber: string
-  photo: {}
+  photo: any
   gender: string
   dateBirth: string
   latitude: number

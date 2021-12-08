@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import
-{
+import {
   StyleSheet,
   Text,
   View,
@@ -17,7 +16,7 @@ import { getCallHelp } from '../../services/yanapakun/callHelp'
 import { CallHelp } from '../../interfaces/callHelp'
 import { ModalEmergency } from '../../components/ModalEmergency'
 
-interface Props extends HistoryScreenProps{}
+interface Props extends HistoryScreenProps { }
 
 const HistoryScreen = ({ navigation }: Props) => {
   const [callsHelp, setCallsHelp] = useState<CallHelp[]>([])
@@ -31,21 +30,21 @@ const HistoryScreen = ({ navigation }: Props) => {
   }
 
   const [atention, setAtention] = useState(false)
-  
+
   const [user, onChangeUser] = useState<CallHelp>()
 
-  const getHour = ( createdAt: string ) => {
-    return  createdAt.substring(11,16)
+  const getHour = (createdAt: string) => {
+    return createdAt.substring(11, 16)
   }
-  const getDay = (createdAt: string ) => {
-    return  parseInt(createdAt.substring(8,10))
+  const getDay = (createdAt: string) => {
+    return parseInt(createdAt.substring(8, 10))
   }
   const date = new Date().getDate()
-  
 
   useEffect(() => {
     getCallsHelp().then(() => console.log('get calls help'))
   }, [])
+
   return (
     <SafeAreaView style={ styles.container }>
       <ScrollView>
@@ -53,12 +52,12 @@ const HistoryScreen = ({ navigation }: Props) => {
           <Header title="Historial de Emergencias" navigation={ navigation } />
           <View style={ styles.containNotifications }>
             {
-              callsHelp.map((callHelp: CallHelp, index: number) => {
+              callsHelp.map((callHelp, index: number) => {
                 return (
                   <View style={ styles.notification } key={ index }>
-                    <TouchableOpacity onPress={() => navigation.navigate('LocationUserScreen')}>
+                    <TouchableOpacity onPress={ () => navigation.navigate('LocationUserScreen', { call: callHelp }) }>
                       <Text style={ styles.emergencyUser }>{ `${callHelp.user.profile.firstName} ${callHelp.user.profile.lastName}` }</Text>
-                      <Text style={ styles.emergencyTime }>{ (getDay(callHelp.createdAt) > date) ?'Ayer': 'Hoy'  } { getHour(callHelp.createdAt) }</Text>
+                      <Text style={ styles.emergencyTime }>{ (getDay(callHelp.createdAt) > date) ? 'Ayer' : 'Hoy' } { getHour(callHelp.createdAt) }</Text>
                     </TouchableOpacity>
                     {
                       callHelp.status
@@ -68,8 +67,8 @@ const HistoryScreen = ({ navigation }: Props) => {
                               onChangeUser(callHelp)
                               setAtention(true)
                             } }
-                    >
-                          <Reject/>
+                        >
+                          <Reject />
                           <Text style={ styles.btnRed }>Sin respuesta</Text>
                         </TouchableOpacity>
                         : <TouchableOpacity
@@ -78,17 +77,17 @@ const HistoryScreen = ({ navigation }: Props) => {
                               onChangeUser(callHelp)
                               setAtention(true)
                             } }
-                    >
-                          <Ready/>
+                        >
+                          <Ready />
                           <Text style={ styles.btnGreen }>Atendida</Text>
                         </TouchableOpacity>
                     }
-                    {/* <ModalNotification 
+                    { /* <ModalNotification
                       isVisible={ atention }
                       key={ index }
                       hideAction={ () => setAtention(false) }
                       user={ user! }
-                    /> */}
+                    /> */ }
                   </View>
                 )
               })

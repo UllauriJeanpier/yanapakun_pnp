@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Platform } from 'react-native'
+import { Alert, Platform } from 'react-native'
 import Constants from 'expo-constants'
 import * as Notifications from 'expo-notifications'
 import { Subscription } from '@unimodules/core'
@@ -40,7 +40,7 @@ const useNotifications = () => {
 
   const getPushToken = async () => {
     if (!Constants.isDevice) {
-      alert('Debe usar un dispositivo físico para recibir notificaciones')
+      Alert.alert('Debe usar un dispositivo físico para recibir notificaciones')
     }
 
     try {

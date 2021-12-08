@@ -29,7 +29,7 @@ api.interceptors.request.use(
 api.interceptors.response.use((config) => {
   return config
 }, async (error) => {
-  console.log(error.response?.data)
+  /* console.log(error.response?.data) */
   const code = parseInt(error.response?.status)
   if (code === 401) {
     console.log('Not authorized')
