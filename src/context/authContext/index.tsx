@@ -5,6 +5,8 @@ import { IResLogin } from '../../interfaces/authInterfaces'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { isPast, addMinutes } from 'date-fns'
 import { refreshToken, userLogin } from '../../services/yanapakun/auth'
+import { RESPONSE_MSG } from '../../utils/responseTexts'
+import { Alert } from 'react-native'
 
 export interface AuthState {
   isLogIn: boolean
@@ -94,8 +96,16 @@ export const AuthProvider = ({ children }: any) => {
   const signIn = async (payload: any) => {
     try {
       const response = await userLogin(payload)
-      const { data }: IResLogin = response.data
-      if (response.status === 201) {
+      if (response.message === RESPONSE_MSG.NOTCIPNUMBER) {
+        Alert.alert('No existe este numero de CPI')
+        return
+      }
+      if (response.message === RESPONSE_MSG.NOTUSERWITHCIPNUMBER) {
+        Alert.alert('Debe registrarse para poder ingresar')
+        return
+      }
+      if (response.message === RESPONSE_MSG.OK) {
+        const { data }: IResLogin = response
         const tokenExpiration = addMinutes(new Date(), 1440)
         await AsyncStorage.setItem('token', data.access_token)
         await AsyncStorage.setItem('user', JSON.stringify(data.user))

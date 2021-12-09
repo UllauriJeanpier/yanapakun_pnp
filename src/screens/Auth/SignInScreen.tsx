@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native'
 import Button from '../../components/Button'
 import Header from '../../components/Header'
 import InputForm from '../../components/InputForm'
@@ -29,14 +29,14 @@ const SignInScreen = ({ navigation }: Props) => {
   const goToIndex = () => navigation.navigate('IndexScreen')
 
   const login = async () => {
-    if (email.length === 0 || password.length === 0) {
-      Alert.alert('El campo de correo o contraseña no puede estar vacío')
+    if (CPI.length === 0 || password.length === 0) {
+      Alert.alert('Complete todos los campos')
       return
     }
     try {
       setLoading(true)
       await signIn({
-        email,
+        cid: CPI,
         password
       })
       setLoading(false)
@@ -57,14 +57,14 @@ const SignInScreen = ({ navigation }: Props) => {
         <View style={ styles.container }>
           <View style={ styles.inputsContainer }>
             <InputForm
-              label={ 'Correo electrónico:' }
-              placeholder={ 'Escriba su correo electrónico' }
-              valueInput={ email }
-              setValueInput={ setEmail }
-              validateInput={ validateEmail }
-              setValidateInput={ setValidateEmail }
-              functionValidation={ handleEmail }
-              errorMessage={ 'Escribe un correo válido' }
+              label={ 'CPI:' }
+              placeholder={ 'Escriba su CPI' }
+              valueInput={ CPI }
+              setValueInput={ setCPI }
+              validateInput={ validateCPI }
+              setValidateInput={ setValidateCPI }
+              functionValidation={ handleCPI }
+              errorMessage={ 'Escribe CPI válido' }
             />
             <InputForm
               label={ 'Contraseña:' }
