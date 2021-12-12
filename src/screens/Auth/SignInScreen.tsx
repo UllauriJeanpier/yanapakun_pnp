@@ -35,7 +35,7 @@ const SignInScreen = ({ navigation }: Props) => {
     }
     try {
       setLoading(true)
-      await signIn({
+      signIn({
         cid: CPI,
         password
       })

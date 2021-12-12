@@ -38,7 +38,7 @@ const HomeScreen = ({ navigation }: Props) => {
       if (typeof user === 'string') {
         dataUser = JSON.parse(user)
         if (token ?? user) {
-          await updatePartialUser(dataUser?.id, {
+          const res = await updatePartialUser(dataUser?.id, {
             notificationToken: token
           })
         }

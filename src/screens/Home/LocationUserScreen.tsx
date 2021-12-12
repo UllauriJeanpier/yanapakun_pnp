@@ -81,7 +81,7 @@ export const LocationUserScreen = ({ navigation, route }: Props) => {
                 </TouchableOpacity>
                 )
               : (
-                <TouchableOpacity /* onPress={ () => setIsActive(true) } */ style={ styles.btn }>
+                <TouchableOpacity onPress={ () => navigation.navigate('HistoryScreen') } style={ styles.btn }>
                   <Text style={ styles.btnTxt }>Atender otra emergencia</Text>
                 </TouchableOpacity>
                 )

@@ -6,12 +6,16 @@ export const getProfile = async () => {
 }
 
 export const updateProfile = async (userId: number, payload: any) => {
-  return await Api.patch(`/users/profile/${userId}`, payload)
+  return await Api.patch(`/users/profile/${userId}`, payload, {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
 }
 
 export const getProfilePhoto = async (id: number) => {
   const token = await AsyncStorage.getItem('token') ?? ''
-  return await fetch(`https://yanapakunpolicia.com/users/profile/photo/${id}`, {
+  return await fetch(`https://yanapakunpolicia.com/users/profile/${id}`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`
@@ -57,5 +61,5 @@ export const uploadImage = async (uri: string, id: number) => {
   }
 
   // @ts-expect-error
-  return await fetch(`https://yanapakunpolicia.com/users/profile/photo/${id}`, options)
+  return await fetch(`https://yanapakunpolicia.com/users/profile/photo/${id}`, options).then(async (res) => await res.json())
 }

@@ -6,6 +6,7 @@ export const baseURL = 'https://yanapakunpolicia.com'
 const api = axios.create({
   baseURL
 })
+
 api.interceptors.request.use(
   async (config) => {
     const urlsExcludedForBearerHeader = [
@@ -21,6 +22,8 @@ api.interceptors.request.use(
   async (error) => {
     const code = parseInt(error.response?.status)
     if (code === 401) {
+      /* logOut() */
+      /* await storage.clean() */
       console.log('Not authorized')
     }
     return await Promise.reject(error)
@@ -33,6 +36,7 @@ api.interceptors.response.use((config) => {
   /* console.log(error.response?.data) */
   const code = parseInt(error.response?.status)
   if (code === 401) {
+    /* logOut() */
     console.log('Not authorized')
   }
   return await Promise.reject(error)
