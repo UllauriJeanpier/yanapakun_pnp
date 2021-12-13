@@ -9,6 +9,9 @@ import IndexScreen from '../screens/Auth/IndexScreen'
 import DrawerNavigator from './DrawerNavigator'
 import { RootStackParams } from '../utils/types'
 import { AuthContext } from '../context/authContext'
+import SendEmailScreen from '../screens/Auth/RecoverPassword/SendEmailScreen'
+import SendCodeScreen from '../screens/Auth/RecoverPassword/SendCodeScreen'
+import ChangePasswordScreen from '../screens/Auth/RecoverPassword/ChangePasswordScreen'
 
 const Stack = createNativeStackNavigator<RootStackParams>()
 
@@ -22,6 +25,9 @@ const StackNavigator = () => {
           <Stack.Screen name="IndexScreen" component={ IndexScreen }/>
           <Stack.Screen name="SignInScreen" component={ SignInScreen }/>
           <Stack.Screen name="SignUpScreen" component={ SignUpScreen }/>
+          <Stack.Screen name="SendEmailScreen" component={ SendEmailScreen }/>
+          <Stack.Screen name="SendCodeScreen" component={ SendCodeScreen }/>
+          <Stack.Screen name="ChangePasswordScreen" component={ ChangePasswordScreen }/>
         </>)
         : (<>
           <Stack.Screen name="DrawerNavigator" component={ DrawerNavigator }/>

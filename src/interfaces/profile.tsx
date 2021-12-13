@@ -43,6 +43,11 @@ export interface IUser {
   police: IPolice
 }
 
+export interface IPoliceRes {
+  statusCode: number
+  data?: IPolice
+}
+
 export interface IPolice {
   id: number
   rank: string
@@ -50,4 +55,5 @@ export interface IPolice {
   policeUnit: string
   createdAt: Date
   updatedAt: Date
+  user?: IUser
 }

@@ -10,6 +10,13 @@ export type RootStackParams = {
   IndexScreen: undefined
   SignUpScreen: undefined
   SignInScreen: undefined
+  SendEmailScreen: undefined
+  SendCodeScreen: {
+    email: string
+  }
+  ChangePasswordScreen: {
+    email: string
+  }
   DrawerNavigator: undefined
 }
 
@@ -32,6 +39,9 @@ export type RootDrawerParams = {
 export type SignInScreenProps = NativeStackScreenProps<RootStackParams, 'SignInScreen'>
 export type SignUpScreenProps = NativeStackScreenProps<RootStackParams, 'SignUpScreen'>
 export type IndexScreen = NativeStackScreenProps<RootStackParams, 'IndexScreen'>
+export type SendEmailScreen = NativeStackScreenProps<RootStackParams, 'SendEmailScreen'>
+export type SendCodeScreen = NativeStackScreenProps<RootStackParams, 'SendCodeScreen'>
+export type ChangePasswordScreen = NativeStackScreenProps<RootStackParams, 'ChangePasswordScreen'>
 
 // ScreenProps Drawer Screens
 
@@ -45,13 +55,15 @@ export type ProfileUserScrenProps = DrawerScreenProps<RootDrawerParams, 'Profile
 
 export type NavigationSignInProp = NativeStackNavigationProp<RootStackParams, 'SignInScreen'>
 export type NavigationSignUpProp = NativeStackNavigationProp<RootStackParams, 'SignUpScreen'>
+export type NavigationSendCodeProp = NativeStackNavigationProp<RootStackParams, 'SendCodeScreen'>
+export type NavigationChangePasswordProp = NativeStackNavigationProp<RootStackParams, 'ChangePasswordScreen'>
 export type NavigationHomeProp = DrawerNavigationProp<RootDrawerParams, 'HomeScreen'>
 export type NavigationProfileProp = DrawerNavigationProp<RootDrawerParams, 'ProfileScreen'>
 export type NavigationProfileUserProp = DrawerNavigationProp<RootDrawerParams, 'ProfileUser'>
 export type NavigationHistoryProp = DrawerNavigationProp<RootDrawerParams, 'HistoryScreen'>
 export type NavigationLocationUserProp = DrawerNavigationProp<RootDrawerParams, 'LocationUserScreen'>
 
-export type NavigationStackProp = NavigationSignInProp | NavigationSignUpProp
+export type NavigationStackProp = NavigationSignInProp | NavigationSignUpProp | NavigationSendCodeProp |NavigationChangePasswordProp
 export type NavigationDrawerProp = NavigationHomeProp | NavigationProfileProp | NavigationHistoryProp | NavigationLocationUserProp | NavigationProfileUserProp
 export type NavigationScreenProp = NavigationStackProp | NavigationDrawerProp
 

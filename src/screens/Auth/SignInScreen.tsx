@@ -25,7 +25,7 @@ const SignInScreen = ({ navigation }: Props) => {
   const { signIn, authState } = useContext(AuthContext)
 
   const goToSignUp = () => navigation.navigate('SignUpScreen')
-
+  const goToRecoverPassword = () => navigation.navigate('SendEmailScreen')
   const goToIndex = () => navigation.navigate('IndexScreen')
 
   const login = async () => {
@@ -79,7 +79,7 @@ const SignInScreen = ({ navigation }: Props) => {
             />
           </View>
           <View style={ styles.sesionContainer }>
-            <Text style={ styles.txtInf }>Olvidaste tu contraseña</Text>
+            <Text style={ styles.txtInf } onPress={ goToRecoverPassword } >Olvidaste tu contraseña</Text>
             <Button title={ 'Iniciar sesión' } action={ login }/>
             <Text style={ styles.txtInf }>¿No estás registrado?{ ' ' }
               <Text style={ styles.boldTxtInfo } onPress={ goToSignUp }>
