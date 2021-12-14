@@ -33,6 +33,35 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:938950625640:android:caf01ff1ca7c62ef3faedd",
+        "android_client_info": {
+          "package_name": "com.likeseasons.yanapakunpnp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "938950625640-va5qetcubmehv9kln9hv9uet7jveokn7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcgLd_QGajo-wCDY_n-JClc99qUy4l3NU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "938950625640-va5qetcubmehv9kln9hv9uet7jveokn7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"
